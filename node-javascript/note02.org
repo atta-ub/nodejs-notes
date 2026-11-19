@@ -1,0 +1,70 @@
+Expressions and Operators
+
+This
+this keyword refers to the context where a piece of code  is supposed to run.
+Used in object methods, where this refers to the object that the method is
+attached to
+
+
+#+BEGIN_SRC  javascript
+  const test = {
+    prop: 42,
+    func() {
+      return this.prop;
+    }
+  }
+
+  console.log(test.func());
+  // Expected output: 42
+#+END_SRC  
+
+
+[] array initializer
+{} object initializer
+The function* keyword defines a generator function expression.
+The super keyword calls the parent constructor or
+allows accessing properties of the parent object
+
+A++/A-- Postfix increment/decrement operator.
+++A/--A Prefix increment/decrement operator.
+
+#+BEGIN_SRC  javascript
+  let x = 3;
+  const y = x--;
+  console.log(`x:${x}, y:${y}`);
+  // Expected output: "x:2, y:3"
+#+END_SRC
+
+#+BEGIN_SRC  javascript
+  let a = 3;
+  const b = --a;
+  console.log(`a:${a}, b:${b}`)
+ // Expected output: "a:2, b:2"
+#+END_SRC  
+
+
+#+BEGIN_SRC typescript
+  let x = 3;
+  const y = x++;
+  console.log(`x:${x}, y:${y}`);
+  // Expected output: "x:4, y:3"
+#+END_SRC
+
+#+BEGIN_SRC typescript
+  let a = 3;
+  const b = ++a;
+  console.log(`a:${a}, b:${b}`);
+  // Expected output: "a:4, b:4"
+#+END_SRC
+
+The void operator evaluates an expression and discards its return value.
+
+#+BEGIN_SRC  javascript
+const foo = null ?? "default string";
+console.log(foo);
+// Expected output: "default string"
+const baz = 0 ?? 42;
+console.log(baz);
+// Expected output: 0
+#+END_SRC  
+

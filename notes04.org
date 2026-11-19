@@ -1,0 +1,19 @@
+Node.js with WebAssembly
+
+WebAssembly:  a high-performance assembly-like language
+Can be compiled from various languages
+Supported by most browsers and  Node.js
+Two file formats,
+.wasm: a binary format 
+.wat: a text representation called WebAssembly Text format 
+
+#+BEGIN_SRC js
+console.log(WebAssembly);
+/*
+Object [WebAssembly] {
+  compile: [Function: compile],
+  validate: [Function: validate],
+  instantiate: [Function: instantiate]
+}
+*/
+#+END_SRC 

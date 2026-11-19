@@ -1,0 +1,36 @@
+
+ECMAScript 2015 (ES6) and beyond
+Node.js is built against modern versions of V8.
+New features from the JavaScript ECMA-262 specification are brought to Node.js
+All ECMAScript 2015 (ES6) features are split into three groups
+for shipping (stable, default in nodejs), staged (not V8-stable, require
+runtimje flag --harmony), and in progress features (can be a )
+
+node.green provides an overview over supported ECMAScript features in
+various versions of Node.js
+
+
+# ==========================================================================
+Debugging Node.js
+Enable Inspector, start with the --inspect switch
+Node.js process listens for a debugging client (127.0.0.1:9229)
+
+A full URL 
+ws://127.0.0.1:9229/0f2c936f-b1cd-4ac9-aab3-f63b0f33d55e.
+
+start listening for debugging messages if it receives a SIGUSR1 signal
+
+
+=may execute arbitrary code on behalf of the Node.js process. Understand the security implications of exposing the debugger port on public and private networks.=
+
+Local applications have full access to the inspector
+Websites open in a web-browser can make WebSocket and HTTP requests under the
+browser security model.
+
+Command-line options
+--inspect	
+--inspect=[host:port]	
+--inspect-brk	
+--inspect-brk=[host:port]	
+--inspect-wait	
+

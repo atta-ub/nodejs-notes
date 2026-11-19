@@ -1,0 +1,133 @@
+Userland Migrations
+
+Migrate codebases to the latest Node.js versions
+Handle deprecations, new features, and breaking changes
+
+use a codemod
+
+#+BEGIN_SRC sh
+npx codemod <codemod-name>
+npx codemod @nodejs/import-assertions-to-attributes
+#+END_SRC 
+
+Run migrations in a separate branch
+Review changes
+Test your code
+Format and or lint your code:  Ensures that your code follows the project's coding standards 
+
+Understanding Codemods Registry
+Follow the Userland Migrations Progression
+GitHub project board.This board tracks:
+Codemod kind (deprecation, breaking change, ecosystem)
+Node.js version
+Status (backlog, todo, in progress, done, not planned) If you want to contribute, please check the "todo" column
+Migrations guides
+
+
+# ################################################################
+Run Node.js scripts from the command line
+
+To restart the application when a file changes.
+Useful for development purposes.
+#+BEGIN_SRC  javascript
+node --watch app.js
+#+END_SRC  
+
+Run a task with Node.js
+Using the --run flag
+Run a specified command from the scripts section of your package.json file
+
+#+BEGIN_SRC  json
+  {
+    "type": "module",
+    "scripts": {
+      "start": "node app.js",
+      "test": "node --test"
+    }
+  }
+#+END_SRC  
+
+#+BEGIN_SRC  javascript
+node --run test
+#+END_SRC  
+
+Passing arguments to the command
+
+#+BEGIN_SRC  javascript
+  node --run start -- --port 8080
+#+END_SRC  
+
+# ################################################################
+Node.js REPL
+Read Evaluate Print Loop,
+A programming language environment (basically a console window)
+Takes single expression as user input and returns the result back to the console
+after execution.
+
+Read line of code, evaluate it, printed the result, and then go back to waiting
+for more lines of code.
+Loop through these three steps for every piece of code
+
+
+
+Dot commands
+.help: shows the dot commands help.
+.editor: enters editor mode, to write multiline JavaScript code.
+.break / .clear: exits multi-line code like functions. Same as pressing CTRL-C.
+.load: loads a JavaScript file, relative to the current working directory.
+.save: saves all commands you entered in the session to a file.
+.exit: exits the REPL (same as pressing CTRL-C twice).
+
+import the REPL in a JavaScript file using repl.
+const repl = require('node:repl');
+repl.start();
+node repl.js
+const local = repl.start('$ ');
+
+console.count() will count the number of times a string is printed
+console.countReset() method resets counter used with console.count()
+To print the call stack trace of a function, use console.trace()
+Use console.time() and console.timeEnd() to track the time spent in a session
+console.error prints to the stderr stream.
+
+To get a nice output at the terminal, use styleText function provided by the node:util module
+
+#+BEGIN_SRC  javascript
+    import { styleText } from 'node:util';
+
+    console.log(
+    styleText(['red'], 'This is red text ') +
+      styleText(['green', 'bold'], 'and this is green bold text ') +
+      'this is normal text'
+  );
+  
+#+END_SRC  
+
+
+# ################################################################
+Input from the command line
+
+#+BEGIN_SRC  javascript
+
+  const readline = require('node:readline');
+
+  const rl = readline.createInterface({
+    input: process.stdin,
+    output: process.stdout,
+  });
+
+  rl.question(`What's your name?`, name => {
+    console.log(`Hi ${name}!`);
+    rl.close();
+  });
+
+#+END_SRC  
+
+# ################################################################
+Read environment variables from Node.js
+
+process core module provides the env property, 
+hosts all the environment variables that were set at the moment the process was
+started.
+
+process.loadEnvFile(path) loads variables from a .env file into process.env

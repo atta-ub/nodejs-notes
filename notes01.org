@@ -1,0 +1,48 @@
+
+Node.js
+- JavaScript runtime environment
+- runs the V8 JavaScript engine outside of the browser
+- A Node.js app runs in a single process.
+  provides a set of asynchronous I/O primitive 
+  prevent JavaScript code from blocking
+  handles thousands of concurrent connections
+- server-side code in in JS
+- ECMAScript standards, 
+
+No dom, no  document, no window
+Browsers don't have all the APIs  (filesystem access functionality)
+
+V8 JavaScript engine that powers Google Chrome
+Parses and executes JavaScript code.
+The DOM are provided by the browser
+JavaScript engine is independent of the host browser
+powers server-side code and dsektpo apps (electron)written in JavaScript
+V8 written in C++, cross platform 
+
+JavaScript an interpreted language
+Modern engines also compile it
+V8 with just-in-time (JIT) compilation 
+Applications can now run for hours inside a browser
+
+NPM
+Standard package manager for Node.js
+manages versioning
+Yarn, pnpm are alternatives to npm cli
+
+--save-dev 
+--no-save 
+--save-optional
+--no-optional 
+-S: --save
+-D: --save-dev
+-O: --save-optional
+
+optionalDependencies, build failure of the dependency will not cause
+installation to fail
+
+#+BEGIN_SRC sh
+  $ npm run watch
+  $ npm run dev
+  $ npm run prod
+#+END_SRC 
+

@@ -1,0 +1,126 @@
+Native WebSocket Client in Node.js
+Full-duplex or bi-directional (different from it from HTTP)
+HTTP compatibility by using the HTTP Upgrade header to transition protocols
+Allows servers to push content to clients without initial requests
+Maintains open connections for continuous message exchange
+Ideal for real-time data transfer with lower overhead
+Communications typically occur over TCP ports 443 (secured) or 80 (unsecured),
+Node.js can act as a WebSocket client
+Initiate and manage outgoing WebSocket connections directly
+Sending and receiving JSON data, common in WebSocket applications.
+
+Node.js v22 does not provide a built-in native WebSocket server implementation.
+use libraries like ws or socket.io.too create a WebSocket server
+requires external tools to become a WebSocket server
+
+Development VS Production
+No main difference between development and production in Node.js
+A few libraries recognize using the =NODE_ENV= variable
+and default it to a development setting
+
+Always run your Node.js with the =NODE_ENV= = production set
+Configure your application  by using the twelve factor methodology.
+=NODE_ENV= considered an antipattern
+
+Environment: a digital platform or a system to build, test, deploy, and manage
+software products.
+
+Four stages or types of environments
+
+Development
+Testing
+Staging
+Production
+
+#+BEGIN_SRC  javascript
+  if (process.env.NODE_ENV === 'development') {    // ...  }
+  if (process.env.NODE_ENV === 'production') {    // ...  }
+  if (['production', 'staging'].includes(process.env.NODE_ENV)) {    // ...  }
+#+END_SRC
+
+Profiling a Node.js application
+Measuring its performance by analyzing the CPU, memory, runtime metrics
+Identifying bottlenecks, high CPU usage, memory leaks, or slow function calls
+Use the Node.js built-in profiler
+Profiler inside V8, samples the stack at regular intervals
+A simple Express application. Two handlers, one for adding new users to our system:
+
+#+BEGIN_SRC  javascript
+app.get('/newUser', (req, res) => {
+  let username = req.query.username || '';
+  const password = req.query.password || '';
+  username = username.replace(/[^a-zA-Z0-9]/g, '');
+  if (!username || !password || users[username]) {
+    return res.sendStatus(400);
+  }
+  const salt = crypto.randomBytes(128).toString('base64');
+  const hash = crypto.pbkdf2Sync(password, salt, 10000, 512, 'sha512');
+  users[username] = { salt, hash };
+  res.sendStatus(200);
+});
+#+END_SRC
+
+
+#+BEGIN_SRC  javascript
+app.get('/auth', (req, res) => {
+  let username = req.query.username || '';
+  const password = req.query.password || '';
+  username = username.replace(/[^a-zA-Z0-9]/g, '');
+  if (!username || !password || !users[username]) {
+    return res.sendStatus(400);
+  }
+  const { salt, hash } = users[username];
+  const encryptHash = crypto.pbkdf2Sync(password, salt, 10000, 512, 'sha512');
+  if (crypto.timingSafeEqual(hash, encryptHash)) {
+    res.sendStatus(200);
+  } else {
+    res.sendStatus(401);
+  }
+});
+#+END_SRC
+
+Deployed application,
+High latency on requests
+
+#+BEGIN_SRC  javascript
+NODE_ENV=production node --prof app.js
+#+END_SRC
+
+put some load on the server using ab (ApacheBench)
+
+#+BEGIN_SRC sh
+curl -X GET "http://localhost:8080/newUser?username=matt&password=password"
+ab -k -c 20 -n 250 "http://localhost:8080/auth?username=matt&password=password"
+#+END_SRC
+
+Make a small modification to use the asynchronous version of the pbkdf2 function:
+
+#+BEGIN_SRC  javascript
+app.get('/auth', (req, res) => {
+  let username = req.query.username || '';
+  const password = req.query.password || '';
+  username = username.replace(/[^a-zA-Z0-9]/g, '');
+  if (!username || !password || !users[username]) {
+    return res.sendStatus(400);
+  }
+  crypto.pbkdf2(
+    password,
+    users[username].salt,
+    10000,
+    512,
+    'sha512',
+    (err, hash) => {
+      if (users[username].hash.toString() === hash.toString()) {
+        res.sendStatus(200);
+      } else {
+        res.sendStatus(401);
+      }
+    }
+  );
+});
+#+END_SRC
+
+
+
+
+
